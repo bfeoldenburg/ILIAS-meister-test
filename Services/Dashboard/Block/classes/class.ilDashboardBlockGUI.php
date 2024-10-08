@@ -407,6 +407,8 @@ abstract class ilDashboardBlockGUI extends ilBlockGUI implements ilDesktopItemHa
             $this->ctrl->setParameter($this, 'presentation', null);
         }
 
+//if (!\ilUtil::isRoleMember(["User-demo"])) {
+if (!\ilUtil::isLimitedRoleMember()) {
         if ($this->removeMultipleEnabled()) {
             $roundtrip_modal = $this->ui->factory()->modal()->roundtrip(
                 $this->getRemoveMultipleActionText(),
@@ -425,6 +427,7 @@ abstract class ilDashboardBlockGUI extends ilBlockGUI implements ilDesktopItemHa
                 $roundtrip_modal
             );
         }
+}
     }
 
     public function executeCommand(): string

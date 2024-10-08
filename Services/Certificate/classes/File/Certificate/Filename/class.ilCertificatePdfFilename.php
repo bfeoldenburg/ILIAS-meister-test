@@ -30,11 +30,17 @@ class ilCertificatePdfFilename implements ilCertificateFilename
 
     public function createFileName(ilUserCertificatePresentation $presentation): string
     {
+        global $DIC;
+        $ilUser = $DIC['ilUser'];
+        $tfn = $ilUser->getFirstname();
+        $tln = $ilUser->getLastname();
+
         $basename = $this->lng->txt('certificate_file_basename');
         if ('' === trim($basename)) {
             $basename = 'Certificate';
         }
 
-        return $basename . '.pdf';
+        // return $basename . '.pdf';
+        return $tfn . "_" . $tln  . "_" . $basename . '.pdf';
     }
 }

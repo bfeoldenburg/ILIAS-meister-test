@@ -110,6 +110,11 @@ class ilTrObjectUsersPropsTableGUI extends ilLPTableBaseGUI
                 'addToClipboard',
                 $this->lng->txt('clipboard_add_btn')
             );
+            $this->addMultiCommand(
+                'deleteLP',
+                'Lernfortschritt zurücksetzen'  //$this->lng->txt('delete LP')
+            );
+
             $this->addColumn("", "", 1);
             $this->has_multi = true;
         }

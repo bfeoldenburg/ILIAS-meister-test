@@ -1487,4 +1487,90 @@ class ilUtil
 
         return $result;
     }
+
+    public static function isOneOfThisUser(array $a_unames): bool
+    {
+        global $DIC;
+        $ilUser = $DIC->user();
+
+        $uLogin = $ilUser->getLoginByUserId($ilUser->getId());
+        if (in_array($uLogin,$a_unames)) {
+            return true;
+        }
+        if (in_array('anon',$a_unames)) {
+            if ($ilUser->getId() == ANONYMOUS_USER_ID) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static function isRoleMember(array $a_rnames): bool
+    {
+        global $DIC;
+        $ilUser = $DIC->user();
+        $idb = $DIC->database();
+        $rbacreview = $DIC['rbacreview'];
+
+        $role_id = 0;
+        $rVal = false;
+        $type = "role";
+
+        foreach ($a_rnames as $rname) {
+            $q = 'SELECT obj_id FROM object_data WHERE type =' . $idb->quote($type, 'string') . ' AND title = ' . $idb->quote($rname, 'string');
+            $r = $idb->query($q);
+            while ($row = $r->fetchRow(ilDBConstants::FETCHMODE_OBJECT)) {
+                $role_id = (int) $row->obj_id;
+            }
+            if (in_array($role_id, $rbacreview->assignedRoles($ilUser->getId()))) {
+                $rVal = true;
+            }
+        }
+        return $rVal;
+    }
+
+    public static function isLimitedRoleMember(): bool
+    {
+        global $DIC;
+        $ilUser = $DIC->user();
+        $idb = $DIC->database();
+        $rbacreview = $DIC['rbacreview'];
+        $rVal = false;
+        $type = "role";
+
+        //self::onScreenLog($ilUser->getId(),'isLimitedRoleMember:user_id');
+        $role_ids = $rbacreview->assignedGlobalRoles($ilUser->getId());
+
+        // $q = 'SELECT title FROM object_data WHERE type =' . $idb->quote($type, 'string') . ' AND obj_id IN (' . implode(',',$role_ids) . ')';
+        foreach ($role_ids as $r_id) {
+            $q = 'SELECT title FROM object_data WHERE type =' . $idb->quote($type, 'string') . ' AND obj_id = ' . $r_id;
+            $r = $idb->query($q);
+            $row = $r->fetchRow(ilDBConstants::FETCHMODE_OBJECT);
+            if ((strpos("$row->title", "-demo") !== false) || (strpos("$row->title", "-ltd") !== false)) {
+                $rVal = true;
+            }
+        }
+        return $rVal;
+    }
+
+    public static function console_log($data, $s = "") {
+        if ($s === "")
+            $consoleOutput = '<script>console.log('.json_encode(gettype($data),JSON_HEX_TAG).','.json_encode($data,JSON_HEX_TAG).');</script>';
+        else
+            $consoleOutput = '<script>console.log('.json_encode($s,JSON_HEX_TAG).','.json_encode(gettype($data),JSON_HEX_TAG).','.json_encode($data,JSON_HEX_TAG).');</script>';
+        echo $consoleOutput;
+    }
+
+    public static function onScreenLog($data, $s = "") {
+        global $DIC;
+        $tpl = $DIC["tpl"];
+        //$ilErr = $DIC["ilErr"];
+
+        if ($s === "")
+            $output = json_encode(gettype($data),JSON_HEX_TAG).': '.json_encode($data,JSON_HEX_TAG);
+        else
+            $output = json_encode($s,JSON_HEX_TAG).' - '.json_encode(gettype($data),JSON_HEX_TAG).': '.json_encode($data,JSON_HEX_TAG);
+        //$ilErr->raiseError("error", 1);
+        $tpl->setOnScreenMessage('success', $output, true);
+    }
 }

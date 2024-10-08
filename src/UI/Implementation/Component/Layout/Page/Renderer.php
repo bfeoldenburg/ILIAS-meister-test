@@ -85,7 +85,10 @@ class Renderer extends AbstractComponentRenderer
             $tpl->setVariable('BREADCRUMBS', $default_renderer->render($breadcrumbs));
 
             $dropdown = $this->convertBreadcrumbsToDropdownLocator($breadcrumbs);
-            $tpl->setVariable('HEADER_BREADCRUMBS', $default_renderer->render($dropdown));
+            if (!\ilUtil::isOneOfThisUser(["anon"]))
+                $tpl->setVariable('HEADER_BREADCRUMBS', $default_renderer->render($dropdown));
+            else
+                $tpl->setVariable('HEADER_BREADCRUMBS', '');
         }
         if ($component->hasLogo()) {
             $tpl->setVariable('LOGO', $default_renderer->render($component->getLogo()));

@@ -32,14 +32,16 @@ class Renderer extends AbstractComponentRenderer
     public function render(Component\Component $component, RendererInterface $default_renderer): string
     {
         $this->checkComponent($component);
-
         $tpl = $this->getTemplate("tpl.breadcrumbs.html", true, true);
 
         $tpl->setVariable("ARIA_LABEL", $this->txt('breadcrumbs_aria_label'));
 
         foreach ($component->getItems() as $crumb) {
             $tpl->setCurrentBlock("crumbs");
-            $tpl->setVariable("CRUMB", $default_renderer->render($crumb));
+            if (!\ilUtil::isOneOfThisUser(["anon"]))
+                $tpl->setVariable("CRUMB", $default_renderer->render($crumb));
+            else
+                $tpl->setVariable("CRUMB", $crumb->getLabel());
             $tpl->parseCurrentBlock();
         }
         return $tpl->get();

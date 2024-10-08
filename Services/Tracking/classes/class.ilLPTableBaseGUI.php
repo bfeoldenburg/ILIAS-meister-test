@@ -168,6 +168,20 @@ class ilLPTableBaseGUI extends ilTable2GUI
                     }
                     break;
 
+                case 'deleteLP':
+                    if (!$this->initUidFromPost()) {
+                        $this->main_tpl->setOnScreenMessage(
+                            'failure',
+                            $this->lng->txt(
+                                'no_checkbox'
+                            ),
+                            true
+                        );
+                    } else {
+                        $this->deleteUserLP();
+                    }
+                    break;
+    
                     // page selector
                 default:
                     $this->determineOffsetAndOrder();
@@ -1219,4 +1233,10 @@ class ilLPTableBaseGUI extends ilTable2GUI
     {
         $this->icon_variant = $variant;
     }
+
+    protected function deleteUserLP()
+    {
+        \ilUtil::onScreenLog("function deleteUserLP", $s = "class.ilLPTableBaseGUI.php");
+    }
+
 }

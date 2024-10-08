@@ -97,7 +97,19 @@ class ilObjFolderGUI extends ilContainerGUI
 
     public function executeCommand(): void
     {
+        global $DIC;
         $ilUser = $this->user;
+        $ilCtrl = $this->ctrl;
+        $access =  $this->access;
+        $nav_history = $DIC["ilNavigationHistory"];
+
+        // add entry to navigation history
+        if(!$this->getCreationMode() && $access->checkAccess('read', '', intval($_GET['ref_id'])))
+        {
+            $link = $ilCtrl->getLinkTargetByClass("ilrepositorygui", "frameset");
+            $nav_history->addItem(intval($_GET['ref_id']), $link, 'fold');
+        }
+
         $next_class = $this->ctrl->getNextClass($this);
         $cmd = $this->ctrl->getCmd();
 

@@ -1836,11 +1836,18 @@ class ilObjectListGUI
                 // Pass type and object ID to ilAccess to improve performance
                 if ($this->checkCommandAccess('read', '', $this->ref_id, $this->type, $this->obj_id)) {
                     $cmd_link = $this->ctrl->getLinkTarget($this->container_obj, 'addToDesk');
-                    $this->insertCommand($cmd_link, $this->lng->txt('rep_add_to_favourites'));
+//if (!ilUtil::isOneOfThisUser(["bfedemo","et-demo"])) {
+//if (!\ilUtil::isRoleMember(["User-demo"])) {
+if (!\ilUtil::isLimitedRoleMember()) {
+                        $this->insertCommand($cmd_link, $this->lng->txt('rep_add_to_favourites'));
+}
                 }
             } else {
                 $cmd_link = $this->ctrl->getLinkTarget($this->container_obj, 'removeFromDesk');
-                $this->insertCommand($cmd_link, $this->lng->txt('rep_remove_from_favourites'));
+//if (!\ilUtil::isRoleMember(["User-demo"])) {
+if (!\ilUtil::isLimitedRoleMember()) {
+                    $this->insertCommand($cmd_link, $this->lng->txt('rep_remove_from_favourites'));
+}
             }
 
             $this->ctrl->clearParameters($this->container_obj);

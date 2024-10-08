@@ -187,8 +187,8 @@ class PageContentProvider extends AbstractModificationProvider
             $links = [];
             // ILIAS Version and Text
             $ilias_version = ILIAS_VERSION;
-            $text = "powered by ILIAS (v{$ilias_version})";
-
+            //$text = "powered by ILIAS (v{$ilias_version})";
+            $text = "powered by ILIAS - <a style='color: black;' href='https://www.bfe.de' target='_blank'>© BFE Oldenburg</a>";
             // Imprint
             $base_class = ($this->dic->http()->wrapper()->query()->has(\ilCtrlInterface::PARAM_BASE_CLASS)) ?
                 $this->dic->http()->wrapper()->query()->retrieve(

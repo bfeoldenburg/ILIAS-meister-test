@@ -1942,7 +1942,8 @@ class ilInitialisation
 
         // fallback, should never happen
         if ($DIC->user()->getId() === ANONYMOUS_USER_ID) {
-            self::goToPublicSection();
+//            self::goToPublicSection();
+            self::redirect("login.php?cmd=force_login&lang=de", "", array());
             return;
         }
 

@@ -45,6 +45,8 @@ class UserMetaBarProvider extends AbstractStaticMetaBarProvider
         };
 
         $children = [];
+//if (!\ilUtil::isRoleMember(["User-demo"])) { 
+if (!\ilUtil::isLimitedRoleMember()) { 
         $children[] = $mb->linkItem($id('personal_profile'))
             ->withAction("ilias.php?baseClass=ilDashboardGUI&cmd=jumpToProfile")
             ->withTitle($txt("personal_profile"))
@@ -56,7 +58,7 @@ class UserMetaBarProvider extends AbstractStaticMetaBarProvider
             ->withTitle($txt("personal_settings"))
             ->withPosition(2)
             ->withSymbol($f->symbol()->icon()->custom(ilUtil::getImagePath("page_editor/icon_personal_settings.svg"), $txt("personal_settings")));
-
+}
         $children[] = $mb->linkItem($id('logout'))
             ->withAction(ilStartUpGUI::logoutUrl())
             ->withPosition(3)

@@ -228,7 +228,7 @@ class ilTrUserObjectsPropsTableGUI extends ilLPTableBaseGUI
             $set = array();
             $parent = false;
             foreach ($tr_data["set"] as $idx => $row) {
-                if ($row['obj_id'] == $this->obj_id) {
+                if (isset($row["obj_id"]) && ($row["obj_id"] == $this->obj_id)) {
                     $parent = $row;
                 } elseif (isset($row["sort_title"])) {
                     $set[strtolower($row["sort_title"]) . "__" . $idx] = $row;
@@ -283,8 +283,9 @@ class ilTrUserObjectsPropsTableGUI extends ilLPTableBaseGUI
     {
         global $DIC;
         $icons = ilLPStatusIcons::getInstance(ilLPStatusIcons::ICON_VARIANT_LONG);
+	$a_resItems = array();
 
-        if (!$this->isPercentageAvailable($a_set["obj_id"])) {
+        if ((isset($a_set["obj_id"])) && (!$this->isPercentageAvailable($a_set["obj_id"]))) {
             $a_set["percentage"] = null;
         }
 
@@ -378,7 +379,7 @@ class ilTrUserObjectsPropsTableGUI extends ilLPTableBaseGUI
                     !ilObjectLP::supportsSpentSeconds($this->type)) {
                     $val = "-";
                 }
-                if ($c == "percentage" &&
+                if ($c == "percentage" && isset($a_set["obj_id"]) && 
                     !$this->isPercentageAvailable($a_set["obj_id"])) {
                     $val = "-";
                 }
@@ -409,16 +410,30 @@ class ilTrUserObjectsPropsTableGUI extends ilLPTableBaseGUI
             ilObject::_getIcon(0, "tiny", $a_set["type"])
         );
         $this->tpl->setVariable("ICON_ALT", $this->lng->txt($a_set["type"]));
+        if ($a_set["type"] == 'sahs') {
+            $subType = ilObjSAHSLearningModule::_lookupSubType($a_set["obj_id"]);
+            if ($subType == 'scorm') {
+                $a_resItems = ilSCORMObject::_lookupPresentableItems($a_set["obj_id"]);
+            } elseif ($subType == 'scorm2004') {
+                $a_resItems = ilObjSCORM2004LearningModule::_getTrackingItems($a_set["obj_id"]);
+            } else {
+                $a_resItems = array("0");
+            }
+        }
 
-        if (in_array(
-            $a_set['type'],
-            array('fold', 'grp')
-        ) && $a_set['obj_id'] != $this->obj_id) {
+//        if (in_array(
+//            $a_set['type'],
+//            array('fold', 'grp')
+//        ) && $a_set['obj_id'] != $this->obj_id) {
+        if ((in_array($a_set['type'], array('fold', 'grp')) && ($a_set['obj_id'] != $this->obj_id)) || (($a_set['type'] == 'sahs') && (count($a_resItems) > 1) && ($a_set['obj_id'] != $this->obj_id)))  {
             if ($a_set['type'] == 'fold') {
                 $object_gui = 'ilobjfoldergui';
-            } else {
+            } elseif ($a_set['type'] == 'grp') {
                 $object_gui = 'ilobjgroupgui';
+            } elseif ($a_set['type'] == 'sahs') {
+                $object_gui = 'ilobjsahslearningmodulegui';
             }
+
             $this->tpl->setCurrentBlock('title_linked');
 
             $base_class = '';

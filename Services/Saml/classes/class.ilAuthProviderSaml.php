@@ -85,6 +85,29 @@ class ilAuthProviderSaml extends ilAuthProvider implements ilAuthProviderAccount
             return false;
         }
 
+//patch begin
+//      print_r($this->attributes); exit;
+        \ilUtil::onScreenLog($this->attributes, $s = "SAML");
+        if (isset($this->attributes['urn:oid:2.5.4.3'][0])) {
+            if (strcmp($this->attributes['urn:oid:1.4.5.1.2.2.42.2.1.3.2.3'][0],'xxxxxxxxxxxxxxx') != 0)
+            {
+                $this->attributes['urn:oid:2.5.4.3'][0] = '';
+            }
+
+            if (strcmp($this->attributes['urn:oid:1.4.5.1.2.2.42.2.1.3.2.9'][0],'Herr') == 0) 
+            {
+                    $this->attributes['urn:oid:1.4.5.1.2.2.42.2.1.3.2.9'][0] = 'm';
+            } else {
+                    if (strcmp($this->attributes['urn:oid:1.4.5.1.2.2.42.2.1.3.2.9'][0],'Frau') == 0)
+                    {
+                        $this->attributes['urn:oid:1.4.5.1.2.2.42.2.1.3.2.9'][0] = 'f';
+                    } else {
+                        $this->attributes['urn:oid:1.4.5.1.2.2.42.2.1.3.2.9'][0] = 'n';
+                    }
+            }
+        }
+//patch end
+
         try {
             $this->determineUidFromAttributes();
 

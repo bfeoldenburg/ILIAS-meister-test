@@ -189,11 +189,23 @@ class StandardPagePartProvider implements PagePartProvider
      */
     public function getLogo(): ?Image
     {
+        //global $DIC;
+        //$ilUser = $DIC['ilUser'];
         $std_logo = ilUtil::getImagePath("logo/HeaderIcon.svg");
 
-        return $this->ui->factory()->image()
+//        return $this->ui->factory()->image()
+//                        ->standard($std_logo, $this->lang->txt('rep_main_page'))
+//                        ->withAction($this->getStartingPointAsUrl());
+        //if ($ilUser->getId() != ANONYMOUS_USER_ID) {
+        if (!ilUtil::isOneOfThisUser(["anon"])) {
+            return $this->ui->factory()->image()
                         ->standard($std_logo, $this->lang->txt('rep_main_page'))
                         ->withAction($this->getStartingPointAsUrl());
+        } else {
+            return $this->ui->factory()->image()
+                        ->standard($std_logo, $this->lang->txt('rep_main_page'))
+                        ->withAction('');
+        }
     }
 
     /**
@@ -201,11 +213,20 @@ class StandardPagePartProvider implements PagePartProvider
      */
     public function getResponsiveLogo(): ?Image
     {
+        //global $DIC;
+        //$ilUser = $DIC['ilUser'];
         $responsive_logo = ilUtil::getImagePath("logo/HeaderIconResponsive.svg");
 
-        return $this->ui->factory()->image()
+        //if ($ilUser->getId() != ANONYMOUS_USER_ID) {
+        if (!ilUtil::isOneOfThisUser(["anon"])) {
+	        return $this->ui->factory()->image()
                         ->standard($responsive_logo, $this->lang->txt('rep_main_page'))
                         ->withAction($this->getStartingPointAsUrl());
+        } else {
+	        return $this->ui->factory()->image()
+                        ->standard($responsive_logo, $this->lang->txt('rep_main_page'))
+                        ->withAction('');
+        }
     }
 
     /**

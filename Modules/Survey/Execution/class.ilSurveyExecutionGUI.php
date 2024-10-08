@@ -641,11 +641,13 @@ class ilSurveyExecutionGUI
             } else {
                 $txt = $this->lng->txt("survey_execution_exit");
             }
+//if($ilUser->getId() != ANONYMOUS_USER_ID) {
+if (!\ilUtil::isOneOfThisUser(["anon"])) {
             $this->gui->button(
                 $txt,
                 $this->ctrl->getLinkTarget($this, "exitSurvey")
             )->toToolbar();
-
+}
             if ($this->object->getOutro() !== '') {
                 $f = $this->gui->ui()->factory();
                 $r = $this->gui->ui()->renderer();

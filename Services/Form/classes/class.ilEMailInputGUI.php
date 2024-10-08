@@ -124,6 +124,10 @@ class ilEMailInputGUI extends ilFormPropertyGUI
                 $ptpl->setVariable('RDISABLED', ' disabled="disabled"');
             }
             $ptpl->setVariable('TXT_RETYPE', $lng->txt('form_retype_email'));
+            if ($this->getRequired()) {
+                $ptpl->setVariable("REQUIRED_2", "required=\"required\"");
+            }
+
             $ptpl->parseCurrentBlock();
         }
 
