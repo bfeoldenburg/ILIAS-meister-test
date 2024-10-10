@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <title>ELKOnet-Administration</title>
+  <base href="/">
+  <meta name="version" content="1.0.8">
+
+  <!--<meta 
+    http-equiv="Content-Security-Policy" 
+    content="default-src 'self' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; script-src 'self' https://intedigi-admin.bfe-elearning.de 'unsafe-inline' 'unsafe-eval';"
+  >-->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <script>
+    function logout() {    
+      let xmlhttp = new XMLHttpRequest();
+      xmlhttp.open('GET', 'saml.php?action=logout', true);
+      xmlhttp.withCredentials = true;
+      xmlhttp.onreadystatechange = () => {
+          if(xmlhttp.readyState === XMLHttpRequest.DONE) {
+              let status = xmlhttp.status;
+              if (status === 0 || (200 <= status && status < 400)) {
+                  let response = xmlhttp.responseText;
+                  let parser = new DOMParser();
+                  let body = parser.parseFromString(response, 'text/html');
+                  console.log('body', body);
+                  if(body!==null && body!==undefined) {
+                      if(response.indexOf('Logout erfolgreich')>=0 || response.indexOf('folgenden Diensten abgemeldet')>=0) {
+                          let frm = body.getElementById('propagate_form');
+                          console.log('frm', frm);
+                          if (frm!=null && frm!==undefined) {
+                              let actionurl = frm.action;
+                              let actionurlArray = actionurl.split('/');
+                              let newUrl = 'https://saml2.bfe-elearning.de/idp/profile/SAML2/Redirect/'+actionurlArray[7]+'&test=1&_eventId=propagate';
+                              //console.log('newUrl', newUrl); 
+                              // Anfrage um von allen SP abzumelden muss verzoegert gesendet werden!!:
+                              setTimeout(() => {
+                                sendLogoutFromAll(newUrl);
+                              }, 900);
+                          } else {
+                            location.href = 'login.php';
+                          }
+                      } else {
+                        location.href = 'login.php';
+                      }
+                  } else {
+                    location.href = 'login.php';
+                  }
+              }
+          }
+      };
+      xmlhttp.send();
+    }
+
+    function sendLogoutFromAll(newUrl) {
+      console.log(newUrl);
+
+      let xmlhttp = new XMLHttpRequest();
+      xmlhttp.open("GET", newUrl, true);
+      xmlhttp.onreadystatechange = () => {
+        if(xmlhttp.readyState === XMLHttpRequest.DONE) {
+          let status = xmlhttp.status;
+          console.log('status', status);
+          console.log('responseText', xmlhttp.responseText);
+          if (status === 0 || (200 <= status && status < 400)) {
+            // Erfolgreich:
+            let response2 = xmlhttp.responseText;   
+            let parser = new DOMParser();
+            let body = parser.parseFromString(response2, 'text/html');
+            console.log('body', body);
+            if(body !== null && body !== undefined) {
+              if (response2.indexOf('Sie sehen diese Meldung wahrscheinlich') > -1) {
+                let iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                document.body.appendChild(iframe);
+                iframe.src = newUrl;
+                setTimeout(() => {
+                  location.href = 'login.php';
+                }, 1500);
+              } else {
+                response2 = response2.replace(/\/idp\//g, 'https://saml2.bfe-elearning.de/idp/');
+                console.log('response2', response2);
+                let iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                document.body.appendChild(iframe);
+                iframe.contentWindow.document.open();
+                iframe.contentWindow.document.write(response2);
+                iframe.contentWindow.document.close();
+                location.href = 'login.php';
+                // iframe.remove();
+              }
+            } else {
+              location.href = 'login.php';
+            }
+          } else {
+            location.href = 'login.php';
+          }
+        }
+      };
+      xmlhttp.send();
+    }
+
+    (function() {
+      logout();
+    })();
+  </script>
+
+</head>
+<body>
+  <div style="margin-top: 40px; font-family: Arial, Helvetica, sans-serif; font-size: 16px; text-align: center;">Sie werden abgemeldet!</div>
+</body>
+</html>

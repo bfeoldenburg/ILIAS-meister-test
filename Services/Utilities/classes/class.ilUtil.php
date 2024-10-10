@@ -1569,7 +1569,7 @@ class ilUtil
         if ($s === "")
             $output = json_encode(gettype($data),JSON_HEX_TAG).': '.json_encode($data,JSON_HEX_TAG);
         else
-            $output = json_encode($s,JSON_HEX_TAG).' - '.json_encode(gettype($data),JSON_HEX_TAG).': '.json_encode($data,JSON_HEX_TAG);
+            $output = json_encode($s,JSON_HEX_TAG).json_encode(gettype($data),JSON_HEX_TAG).': '.json_encode($data,JSON_HEX_TAG);
         //$ilErr->raiseError("error", 1);
         $tpl->setOnScreenMessage('success', $output, true);
     }

@@ -1234,9 +1234,372 @@ class ilLPTableBaseGUI extends ilTable2GUI
         $this->icon_variant = $variant;
     }
 
-    protected function deleteUserLP()
+    protected function __deleteUserLP()
     {
-        \ilUtil::onScreenLog("function deleteUserLP", $s = "class.ilLPTableBaseGUI.php");
+        \ilUtil::onScreenLog("class.ilLPTableBaseGUI.php: deleteUserLP");
     }
 
+    protected function deleteUserLP()
+    {
+        global $DIC;
+        $ilUser = $DIC['ilUser'];
+        $ilErr = $DIC['ilErr'];
+
+        $lpUSER_FILTER_ALL = -1;
+        $lpDELETE_PROGRESS_FILTER_TYPES = array('sahs', 'tst');
+        
+        $usr_ids = $_POST['uid'];
+        $type_filter = array('sahs','tst');
+        $progress_filter = array(0);
+        $containerArr = array($this->ref_id);
+        $otherCrsItemsArr = array();
+        
+        // todo: get all ref_ids for given course-ref_id ($this->ref_id) with type sahs or tst
+        $ref_ids = $this->lpGetCourseItems($this->ref_id, $containerArr, $otherCrsItemsArr);
+        //var_dump($ilUser->getFirstname(), $ilUser->getLastname());
+        //var_dump($ref_ids);
+        //exit;
+
+
+        if (!is_array($usr_ids)) {
+            $usr_ids = (array) $usr_ids;
+        }
+        if (!is_array($type_filter)) {
+            $type_filter = (array) $type_filter;
+        }
+        // Check filter
+        if (array_diff((array) $type_filter, $lpDELETE_PROGRESS_FILTER_TYPES)) {
+            return $ilErr->raiseError('Invalid filter type given', $ilErr->WARNING);
+        }
+
+        include_once 'Services/User/classes/class.ilObjUser.php';
+        if (!in_array($lpUSER_FILTER_ALL, $usr_ids) and !ilObjUser::userExists($usr_ids)) {
+            return $ilErr->raiseError('Invalid user ids given', $ilErr->WARNING);
+        }
+
+        $valid_refs = array();
+        foreach ((array) $ref_ids as $ref_id) {
+            $obj_id = ilObject::_lookupObjId($ref_id);
+            $type = ilObject::_lookupType($obj_id);
+            
+            // All containers
+            if ($GLOBALS['DIC']['objDefinition']->isContainer($type)) {
+                $all_sub_objs = array();
+                foreach (($type_filter) as $type_filter_item) {
+                    $sub_objs = $GLOBALS['DIC']['tree']->getSubTree(
+                        $GLOBALS['DIC']['tree']->getNodeData($ref_id),
+                        false,
+                        $type_filter_item
+                    );
+                    $all_sub_objs = array_merge($all_sub_objs, $sub_objs);
+                }
+                
+                foreach ($all_sub_objs as $child_ref) {
+                    $child_type = ilObject::_lookupType(ilObject::_lookupObjId($child_ref));
+                    if (!$GLOBALS['DIC']['ilAccess']->checkAccess('write', '', $child_ref)) {
+                        // return $ilErr->raiseError('Permission denied for : ' . $ref_id . ' -> type ', $ilErr->WARNING);
+                    } else {
+                        $valid_refs[] = $child_ref;
+                    }
+                }
+            } elseif (in_array($type, $type_filter)) {
+                if (!$GLOBALS['DIC']['ilAccess']->checkAccess('write', '', $ref_id)) {
+                    // return $ilErr->raiseError('Permission denied for : ' . $ref_id . ' -> type ', $ilErr->WARNING);
+                } else {
+                    $valid_refs[] = $ref_id;
+                }
+            } else {
+                return $ilErr->raiseError('Invalid object type given for : ' . $ref_id . ' -> type ' . $type, $ilErr->WARNING);
+            }
+        }
+
+        // Delete tracking data
+        foreach ($valid_refs as $ref_id) {
+            include_once './Services/Object/classes/class.ilObjectFactory.php';
+            $obj = ilObjectFactory::getInstanceByRefId($ref_id, false);
+            
+            if (!$obj instanceof ilObject) {
+                return $ilErr->raiseError('Invalid reference id given : ' . $ref_id . ' -> type ' . $type, $ilErr->WARNING);
+            }
+            
+            // filter users
+            $valid_users = $this->lpApplyProgressFilter($obj->getId(), (array) $usr_ids, (array) $progress_filter);
+
+            //vd($valid_users);
+
+            switch ($obj->getType()) {
+                case 'sahs':
+                    include_once './Modules/ScormAicc/classes/class.ilObjSAHSLearningModule.php';
+                    $subtype = ilObjSAHSLearningModule::_lookupSubType($obj->getId());
+                    
+                    switch ($subtype) {
+                        case 'scorm':
+                            $this->lpDeleteScormTracking($obj->getId(), (array) $valid_users);
+                            break;
+                            
+                        case 'scorm2004':
+                            $this->lpDeleteScorm2004Tracking($obj->getId(), (array) $valid_users);
+                            break;
+                    }
+                    break;
+                    
+                case 'tst':
+                    
+                    /** @var $obj ilObjTest */
+                    $obj->removeTestResultsFromSoapLpAdministration(array_values((array) $valid_users));
+                    break;
+            }
+            
+            // Refresh status
+            include_once './Services/Tracking/classes/class.ilLPStatusWrapper.php';
+            ilLPStatusWrapper::_resetInfoCaches($obj->getId());
+            ilLPStatusWrapper::_refreshStatus($obj->getId(), $valid_users);
+        }
+        $sucess = $this->resetStatisticData($valid_refs, $containerArr, $otherCrsItemsArr, $valid_users);
+        //vd($usr_ids, $this->ref_id, $valid_refs);
+
+        //test: admin, tutor
+        //test: more user
+        //test: deactivated modules
+            
+        //ilias6\webservice\soap\classes\class.ilSoapLearningProgressAdministration.php
+    }
+
+    protected function lpApplyProgressFilter($obj_id, array $usr_ids, array $filter)
+    {
+        include_once './Services/Tracking/classes/class.ilLPStatusWrapper.php';
+        $PROGRESS_FILTER_ALL = 0;
+        $PROGRESS_FILTER_IN_PROGRESS = 1;
+        $PROGRESS_FILTER_COMPLETED = 2;
+        $PROGRESS_FILTER_FAILED = 3;
+        $lpUSER_FILTER_ALL = -1;
+
+        $all_users = array();
+        if (in_array($lpUSER_FILTER_ALL, $usr_ids)) {
+            $all_users = array_unique(
+                array_merge(
+                        ilLPStatusWrapper::_getInProgress($obj_id),
+                        ilLPStatusWrapper::_getCompleted($obj_id),
+                        ilLPStatusWrapper::_getFailed($obj_id)
+                    )
+            );
+        } else {
+            $all_users = $usr_ids;
+        }
+
+        if (!$filter or in_array($PROGRESS_FILTER_ALL, $filter)) {
+            $GLOBALS['DIC']['log']->write(__METHOD__ . ': Deleting all progress data');
+            return $all_users;
+        }
+        
+        $filter_users = array();
+        if (in_array($PROGRESS_FILTER_IN_PROGRESS, $filter)) {
+            $GLOBALS['DIC']['log']->write(__METHOD__ . ': Filtering  in progress.');
+            $filter_users = array_merge($filter, ilLPStatusWrapper::_getInProgress($obj_id));
+        }
+        if (in_array($PROGRESS_FILTER_COMPLETED, $filter)) {
+            $GLOBALS['DIC']['log']->write(__METHOD__ . ': Filtering  completed.');
+            $filter_users = array_merge($filter, ilLPStatusWrapper::_getCompleted($obj_id));
+        }
+        if (in_array($PROGRESS_FILTER_FAILED, $filter)) {
+            $GLOBALS['DIC']['log']->write(__METHOD__ . ': Filtering  failed.');
+            $filter_users = array_merge($filter, ilLPStatusWrapper::_getFailed($obj_id));
+        }
+        
+        return array_intersect($all_users, $filter_users);
+    }
+
+    protected function lpDeleteScormTracking($a_obj_id, $a_usr_ids)
+    {
+        global $DIC;
+
+        $ilDB = $DIC['ilDB'];
+        
+        $query = 'DELETE FROM scorm_tracking ' .
+            'WHERE ' . $ilDB->in('user_id', $a_usr_ids, false, 'integer') . ' ' .
+            'AND obj_id = ' . $ilDB->quote($a_obj_id, 'integer') . ' ';
+        $res = $ilDB->manipulate($query);
+        return true;
+    }
+    
+    protected function lpDeleteScorm2004Tracking($a_obj_id, $a_usr_ids)
+    {
+        global $DIC;
+
+        $ilDB = $DIC['ilDB'];
+        
+        $query = 'SELECT cp_node_id FROM cp_node ' .
+            'WHERE nodename = ' . $ilDB->quote('item', 'text') . ' ' .
+            'AND cp_node.slm_id = ' . $ilDB->quote($a_obj_id, 'integer');
+        $res = $ilDB->query($query);
+        
+        $scos = array();
+        while ($row = $res->fetchRow(ilDBConstants::FETCHMODE_OBJECT)) {
+            $scos[] = $row->cp_node_id;
+        }
+        
+        $query = 'DELETE FROM cmi_node ' .
+                'WHERE ' . $ilDB->in('user_id', (array) $a_usr_ids, false, 'integer') . ' ' .
+                'AND ' . $ilDB->in('cp_node_id', $scos, false, 'integer');
+        $ilDB->manipulate($query);
+    }
+
+    protected function lpGetCourseItems($ref_id, &$coArr, &$ociArr)
+    {
+        //todo: gruppe, kurslink
+        global $DIC;
+        $ilDB = $DIC['ilDB'];
+
+        $objs = array();
+        $retArr = array();
+
+        $tRef = $ref_id;
+        $sql = 'SELECT obj_id FROM crs_items WHERE parent_id = ' . $ilDB->quote($tRef, 'integer');
+        $set = $ilDB->query($sql);
+
+        while ($row = $ilDB->fetchAssoc($set)) {
+            $objs[] = $row["obj_id"];
+        }
+        foreach ($objs as $ref) {
+            $child_type = ilObject::_lookupType(ilObject::_lookupObjId($ref));
+            //$obj = ilObjectFactory::getInstanceByRefId($ref, false);
+
+            if (($child_type === 'sahs') || ($child_type === 'tst')){
+                $retArr[] = $ref;
+            } 
+            else if ($child_type === 'file') 
+            {
+                $ociArr[] = $ref;
+            }
+            else if (($child_type === 'fold') || ($child_type === 'grp')) {  // || ($child_type === 'catr') || ($child_type === 'cat')) 
+                // 1. Containerebene
+                $coArr[] = $ref;
+                $tRef1 = $ref;
+                $sql1 = 'SELECT obj_id FROM crs_items WHERE parent_id = ' . $ilDB->quote($tRef1, 'integer');
+                $set1 = $ilDB->query($sql1);
+                $objs1 = array();
+                while ($row = $ilDB->fetchAssoc($set1)) {
+                    $objs1[] = $row["obj_id"];
+                }
+                foreach ($objs1 as $ref1) {
+                    $child_type = ilObject::_lookupType(ilObject::_lookupObjId($ref1));
+                    if (($child_type === 'sahs') || ($child_type === 'tst')) {
+                        $retArr[] = $ref1;
+                    }
+                    else if ($child_type === 'file') 
+                    {
+                        $ociArr[] = $ref1;
+                    }
+                    else if (($child_type === 'fold') || ($child_type === 'grp')){  // || ($child_type === 'catr') || ($child_type === 'cat')) 
+                        // 2. Containerebene
+                        $coArr[] = $ref1;
+                        $tRef2 = $ref1;
+                        $sql2 = 'SELECT obj_id FROM crs_items WHERE parent_id = ' . $ilDB->quote($tRef2, 'integer');
+                        $set2 = $ilDB->query($sql2);
+                        $objs2 = array();
+                        while ($row = $ilDB->fetchAssoc($set2)) {
+                            $objs2[] = $row["obj_id"];
+                        }
+                        foreach ($objs2 as $ref2) {
+                            $child_type = ilObject::_lookupType(ilObject::_lookupObjId($ref2));
+                            if (($child_type === 'sahs') || ($child_type === 'tst')) {
+                                $retArr[] = $ref2;
+                            }
+                            else if ($child_type === 'file') 
+                            {
+                                $ociArr[] = $ref2;
+                            }
+                            else if (($child_type === 'fold') || ($child_type === 'grp')){  // || ($child_type === 'catr') || ($child_type === 'cat')) 
+                                // 3. Containerebene
+                                $coArr[] = $ref2;
+                                $tRef3 = $ref2;
+                                $sql3 = 'SELECT obj_id FROM crs_items WHERE parent_id = ' . $ilDB->quote($tRef3, 'integer');
+                                $set3 = $ilDB->query($sql3);
+                                $objs3 = array();
+                                while ($row = $ilDB->fetchAssoc($set3)) {
+                                    $objs3[] = $row["obj_id"];
+                                }
+                                foreach ($objs3 as $ref3) {
+                                    $child_type = ilObject::_lookupType(ilObject::_lookupObjId($ref3));
+                                    if (($child_type === 'sahs') || ($child_type === 'tst')) {
+                                        $retArr[] = $ref3;
+                                    }
+                                    else if ($child_type === 'file') 
+                                    {
+                                        $ociArr[] = $ref3;
+                                    }
+                                    else if (($child_type === 'fold') || ($child_type === 'grp')){  // || ($child_type === 'catr') || ($child_type === 'cat')) 
+                                        // 4. Containerebene
+                                        $coArr[] = $ref3;
+                                        $tRef4 = $ref3;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return $retArr;
+    }
+
+    protected function resetStatisticData($v_refs, $statArr, $ociArr, $valid_usrs) {
+        global $DIC;
+        $ilDB = $DIC['ilDB'];
+        global $ilErr;
+
+        $em = array();
+
+        if (!empty($valid_usrs)) {
+            $elements = array_merge((array)$v_refs, (array)$statArr, (array)$ociArr);
+            foreach ($elements as $ref_id) {
+                $em[] = ilObject::_lookupObjId($ref_id);
+            }
+    
+            $query = "UPDATE read_event " .
+                     "SET last_access = " . $ilDB->quote(time(), 'integer') . ", " .
+                     "read_count = " . $ilDB->quote(0, 'integer') . ", " .
+                     "spent_seconds = " . $ilDB->quote(0, 'integer') . ", " .
+                     "childs_read_count = " . $ilDB->quote(0, 'integer') . ", " .
+                     "childs_spent_seconds = " . $ilDB->quote(0, 'integer') . ", " .
+                     "first_access = " . $ilDB->quote(date("Y-m-d H:i:s"), 'timestamp') . " " .
+                     'WHERE ' . $ilDB->in('usr_id', (array) $valid_usrs, false, 'integer') . ' ' .
+                     'AND ' . $ilDB->in('obj_id', (array) $em, false, 'integer');
+                     $ilDB->manipulate($query);
+
+            $tmp = [];  //array();
+            foreach ($statArr as $ref_id) {
+                $tmp[] = ilObject::_lookupObjId($ref_id);
+            }
+            $query = "UPDATE ut_lp_marks " .
+                     "SET percentage = " . $ilDB->quote(0, 'integer') . ", " .
+                     "status = " . $ilDB->quote(0, 'integer') . " " .
+                     'WHERE ' . $ilDB->in('usr_id', (array) $valid_usrs, false, 'integer') . ' ' .
+                     'AND ' . $ilDB->in('obj_id', (array) $tmp, false, 'integer');
+                     $ilDB->manipulate($query);
+
+
+            $tmp = [];  //array();
+            foreach ($v_refs as $ref_id) {
+                $tmp[] = ilObject::_lookupObjId($ref_id);
+            }
+
+            $query = "UPDATE ut_lp_marks " .
+                     "SET status_changed = " . $ilDB->quote(date("Y-m-d H:i:s"), 'timestamp') . " " .
+                     'WHERE ' . $ilDB->in('usr_id', (array) $valid_usrs, false, 'integer') . ' ' .
+                     'AND ' . $ilDB->in('obj_id', (array) $tmp, false, 'integer');
+                     $ilDB->manipulate($query);
+
+
+            $msg = var_export($query, true);            
+            //$msg = var_export($tmp, true);
+            //$ilErr->raiseError($msg, $ilErr->MESSAGE);
+            return true; 
+        } else {
+            $msg = 'Das Rücksetzen des Lernfortschritts ist nur auf Kursebene möglich!';
+            //$msg = var_export($ociArr, true);
+            $ilErr->raiseError($msg, $ilErr->MESSAGE);
+            return false;
+        }
+    }
 }

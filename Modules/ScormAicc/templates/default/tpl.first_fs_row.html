@@ -1,0 +1,15 @@
+<script type="text/javascript">
+    function toggleTreeView(){
+        var ilFS = parent.document.getElementById("il_innerFS");
+        var colVal = ilFS.getAttribute("cols");
+	//alert(colVal);
+        if (colVal === "0%,100%") {
+            parent.document.getElementById("il_innerFS").cols = "25%,75%"
+	} else {
+            parent.document.getElementById("il_innerFS").cols = "0%,100%"
+        }
+    }
+</script>
+<div class="firstFSrow" style="font-size: 75%; font-family: Verdana;">
+<a target="_self" href="#" onclick="toggleTreeView();" id="treeToggle">Baum anzeigen/verbergen</a>
+</div>
