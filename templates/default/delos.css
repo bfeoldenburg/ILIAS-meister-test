@@ -3996,6 +3996,7 @@ hr.il-divider-with-label {
   border: none;
   box-shadow: none;
   outline: none;
+  height: auto;
   line-height: 1.428571429;
   font-weight: 600 !important;
 }
@@ -13837,6 +13838,15 @@ span.ilIcalIcon .btn {
 .il_InfoScreenSection > .ilFloatRight {
   padding-bottom: 4px;
   padding-right: 4px;
+}
+
+.calrecurrenceinput.form-inline label {
+  padding-right: unset;
+  vertical-align: unset;
+}
+
+.calrecurrenceinput.form-inline .form-control {
+  vertical-align: middle;
 }
 
 /* Services/Chart */

@@ -1269,6 +1269,8 @@ assessment#:#tst_add_quest_cont_edit_mode_IPE#:#Unformatierter Text für Fragen 
 assessment#:#tst_add_quest_cont_edit_mode_IPE_info#:#Bietet keine Formatierung von Text in Fragen und Antworten, erlaubt aber Gestaltung der Rückmeldungen und Lösungshinweise mit ILIAS-Seiteneditor und Wiederverwendung bei Fragen in ILIAS-Lernmodulen.
 assessment#:#tst_add_quest_cont_edit_mode_RTE#:#Rich-Text-Editor (TinyMCE) für das Editieren der Fragen, Antworten, Rückmeldungen und Lösungshinweisen
 assessment#:#tst_add_quest_cont_edit_mode_RTE_info#:#Erlaubt formatierten Text für Fragen, Antworten, Rückmeldungen und Lösungshinweise. Rückmeldungen und Lösungshinweise werden aber beim Einbinden von Fragen in ILIAS-Lernmodule nicht übernommen.
+assessment#:#tst_add_quest_cont_edit_mode_plain#:#Unformatierter Text
+assessment#:#tst_add_quest_cont_edit_mode_plain_info#:#Bietet keine Formatierung von Text in Fragen, Antworten, Rückmeldungen und Lösungshinweisen.
 assessment#:#tst_addit_passes_blocked_after_passed_msg#:#Sie haben den Test bestanden. Der Test kann nicht noch einmal gestartet werden.
 assessment#:#tst_all_test_competences#:#Alle Test-Kompetenzen
 assessment#:#tst_all_user_data_deleted#:#Die Daten aller Testteilnehmer wurden gelöscht!
@@ -2784,12 +2786,12 @@ certificate#:#certificate_text#:#Text des Zertifikats
 certificate#:#certificate_text_info#:#Bitte geben Sie hier den Text des Zertifikats ein. Falls der WYSIWYG-Edtior in der ILIAS-Administration deaktiviert wurde, können Sie hier dennoch gültiges XHTML zur Formatierung nutzen.<br><br>
 certificate#:#certificate_unit_description#:#Geben Sie Maße immer in der Form WERT[cm|mm|in|pt|pc|px|em] an, d.h. 10mm oder 3in
 certificate#:#certificate_usage#:#Bitte beachten Sie, dass die Verwendung und Erstellung von Zertifikaten nur möglich ist, wenn Sie den Java-Server von ILIAS verwenden. Der Java-Server wird in der Hauptseite der Administration in der Kategorie Web-Services konfiguriert und ist unter anderem für die Generierung von PDF-Dateien erforderlich.
-certificate#:#certificate_var_max_points#:#46
-certificate#:#certificate_var_result_mark_long#:#Gut
-certificate#:#certificate_var_result_mark_short#:#2
-certificate#:#certificate_var_result_passed#:#bestanden
-certificate#:#certificate_var_result_percent#:#83%
-certificate#:#certificate_var_result_points#:#38
+certificate#:#certificate_var_max_points#:#Maximale Punktzahl im verwendeten Test
+certificate#:#certificate_var_result_mark_long#:#Erreichte Note in der Form 'Offizielle Bezeichnung'
+certificate#:#certificate_var_result_mark_short#:#Erreichte Note in der Form 'Kurzbezeichnung'
+certificate#:#certificate_var_result_passed#:#Angabe, ob der Test bestanden wurde oder nicht
+certificate#:#certificate_var_result_percent#:#Anzahl der erreichten Prozente im Test
+certificate#:#certificate_var_result_points#:#Anzahl der erreichten Punkte im Test
 certificate#:#certificate_var_user_birthday#:#08.05.1977
 certificate#:#certificate_var_user_city#:#Köln
 certificate#:#certificate_var_user_country#:#Deutschland
@@ -13203,6 +13205,7 @@ prg#:#pc_prgstatus_unlimited_validation#:#unbegrenzt gültig
 prg#:#percentage#:#%
 prg#:#prg_access_by_orgu#:#Zugriffsregelungen nach Organisationseinheiten
 prg#:#prg_access_by_orgu_byline#:#Wenn aktiviert, können zusätzliche Zugriffsregelungen über Positionen in Organisationseinheiten vergeben werden.
+prg#:#prg_acknowledge_all_completed_courses#:#Alle bestandenen Kurse anerkennen
 prg#:#prg_acknowledge_completed_courses#:#Bestandene Kurse anerkennen
 prg#:#prg_add#:#Studienprogramm anlegen
 prg#:#prg_added_course_ref_successful#:#Neuer Kurslink erfolgreich hinzugefügt.

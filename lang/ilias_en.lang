@@ -1269,6 +1269,8 @@ assessment#:#tst_add_quest_cont_edit_mode_IPE#:#Use plain text for questions and
 assessment#:#tst_add_quest_cont_edit_mode_IPE_info#:#No formatting of text in question and answers. No use of LaTex either. But feedback and hints can be reused when question is embedded in ILIAS learning module.
 assessment#:#tst_add_quest_cont_edit_mode_RTE#:#Use Rich-Text-Editor (TinyMCE) for editing questions and answers, feedbacks and hints
 assessment#:#tst_add_quest_cont_edit_mode_RTE_info#:#Allows text formatting of questions, answers, feedbacks and hints. But feedback and hints cannot be reused when question is embedded in ILIAS learning module.
+assessment#:#tst_add_quest_cont_edit_mode_plain#:#Use plain text
+assessment#:#tst_add_quest_cont_edit_mode_plain_info#:#No formatting of text in question, answers, feedback, and hints.
 assessment#:#tst_addit_passes_blocked_after_passed_msg#:#You have passed the test. The test cannot be started again.
 assessment#:#tst_all_test_competences#:#All Test Competence
 assessment#:#tst_all_user_data_deleted#:#All user data for this test has been removed!
@@ -2784,12 +2786,12 @@ certificate#:#certificate_text#:#Certificate Text
 certificate#:#certificate_text_info#:#Please enter the certificate text. If the WYSIWYG editor is disabled in the ILIAS administration, you can still use valid XHTML to format the text.<br><br>
 certificate#:#certificate_unit_description#:#Enter units of measure as VALUE[cm|mm|in|pt|pc|px|em], e.g. 10mm or 3in
 certificate#:#certificate_usage#:#Please note that the usage of certificates is only available if the ILIAS Java-Server is running. The configuration for Java-Server is available in Administration » General Settings » Server, sub-tab Java-Server.
-certificate#:#certificate_var_max_points#:#46
-certificate#:#certificate_var_result_mark_long#:#Good
-certificate#:#certificate_var_result_mark_short#:#B
-certificate#:#certificate_var_result_passed#:#passed
-certificate#:#certificate_var_result_percent#:#83%
-certificate#:#certificate_var_result_points#:#38
+certificate#:#certificate_var_max_points#:#Maximum number of points in the test used
+certificate#:#certificate_var_result_mark_long#:#Achieved mark presented in 'official form'
+certificate#:#certificate_var_result_mark_short#:#Achieved mark presented in 'short form'
+certificate#:#certificate_var_result_passed#:#Information on whether the test was passed or not
+certificate#:#certificate_var_result_percent#:#Percentage achieved in the test
+certificate#:#certificate_var_result_points#:#Number of points achieved in the test
 certificate#:#certificate_var_user_birthday#:#1977-05-08
 certificate#:#certificate_var_user_city#:#Anytown, NY
 certificate#:#certificate_var_user_country#:#USA
@@ -13203,6 +13205,7 @@ prg#:#pc_prgstatus_unlimited_validation#:#Unlimited validity
 prg#:#percentage#:#%
 prg#:#prg_access_by_orgu#:#Access Control by Organisation Unit Positions
 prg#:#prg_access_by_orgu_byline#:#If enabled, additional access control rules can be defined by positions in organisational units.
+prg#:#prg_acknowledge_all_completed_courses#:#Acknowledge All Completed Courses
 prg#:#prg_acknowledge_completed_courses#:#Acknowledge Completed Courses
 prg#:#prg_add#:#Add Study Programme
 prg#:#prg_added_course_ref_successful#:#New course link was added successfully
@@ -14663,7 +14666,7 @@ registration#:#reg_direct_info#:#New user registration requests are automaticall
 registration#:#reg_disabled#:#No Registration Possible
 registration#:#reg_domain#:#Domain
 registration#:#reg_domain_already_assigned_p#:#The domains '%s' were already entered for another role.
-registration#:#reg_domain_already_assigned_s#:#The domain '%s' was already entered for another role. 
+registration#:#reg_domain_already_assigned_s#:#The domain '%s' was already entered for another role.
 registration#:#reg_email#:#Automatic Role Assignment
 registration#:#reg_email_domains#:#The following e-mail address domains are valid: %s
 registration#:#reg_email_domains_code#:#With a registration code any E-Mail-Address is valid.

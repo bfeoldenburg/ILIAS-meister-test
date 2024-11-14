@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * This file is part of ILIAS, a powerful learning management system
  * published by ILIAS open source e-Learning e.V.
@@ -18,22 +16,28 @@ declare(strict_types=1);
  *
  *********************************************************************/
 
-namespace ILIAS\BookingManager\Setup;
-
-use ILIAS\Setup;
+namespace ILIAS\Wiki\Setup;
 
 /**
  * @author Alexander Killing <killing@leifos.de>
  */
-class Agent extends Setup\Agent\NullAgent
+class ilWiki8HotfixDBUpdateSteps implements \ilDatabaseUpdateSteps
 {
-    public function getUpdateObjective(Setup\Config $config = null): Setup\Objective
+    protected \ilDBInterface $db;
+
+    public function prepare(\ilDBInterface $db): void
     {
-        return new Setup\ObjectiveCollection(
-            'Booking Manager Update',
-            true,
-            new \ilDatabaseUpdateStepsExecutedObjective(new ilBookingManagerDBUpdateSteps()),
-            new \ilDatabaseUpdateStepsExecutedObjective(new ilBookingManager8HotfixDBUpdateSteps())
+        $this->db = $db;
+    }
+
+    public function step_1(): void
+    {
+        $db = $this->db;
+        $db->manipulateF(
+            "DELETE FROM notification WHERE " .
+            " user_id = %s",
+            ["integer"],
+            [13]
         );
     }
 }
