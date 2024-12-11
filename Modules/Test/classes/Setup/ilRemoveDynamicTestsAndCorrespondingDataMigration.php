@@ -42,7 +42,7 @@ class ilRemoveDynamicTestsAndCorrespondingDataMigration implements Setup\Migrati
 
     public function getLabel(): string
     {
-        return "Delete All Data of Dynamic Tests from Database.";
+        return "Delete All Data of Dynamic (CTM)Tests from Database.";
     }
 
     public function getDefaultAmountOfStepsPerRun(): int
