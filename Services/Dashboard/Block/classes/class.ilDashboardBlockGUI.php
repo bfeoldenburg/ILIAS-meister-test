@@ -395,15 +395,16 @@ abstract class ilDashboardBlockGUI extends ilBlockGUI implements ilDesktopItemHa
             $this->ctrl->setParameter($this, 'presentation', null);
         }
 
-//if (!\ilUtil::isRoleMember(["User-demo"])) {
-if (!\ilUtil::isLimitedRoleMember()) {
-        if ($this->removeMultipleEnabled()) {
-            $this->addBlockCommand(
-                $this->ctrl->getLinkTarget($this, 'manage'),
-                $this->getRemoveMultipleActionText(),
-                '',
-                $this->getRemoveModal()
-            );
+        //if (!\ilUtil::isRoleMember(["User-demo"])) {
+        if (!\ilUtil::isLimitedRoleMember()) {
+            if ($this->removeMultipleEnabled()) {
+                $this->addBlockCommand(
+                    $this->ctrl->getLinkTarget($this, 'manage'),
+                    $this->getRemoveMultipleActionText(),
+                    '',
+                    $this->getRemoveModal()
+                );
+            }
         }
     }
 
