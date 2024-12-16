@@ -50,7 +50,7 @@ abstract class Base extends ilSoapAdministration implements ilSoapMethod
     public function __construct()
     {
         // if (! isset($_GET["wsdl"])) {
-        if ($_SERVER["PHP_SELF"] != "/webservice/soap/server.php") {
+        if ($_SERVER["PHP_SELF"] != "/il_meister/webservice/soap/server.php") {
             $dic = \ilOrgUnitLocalDIC::dic();
             $this->positionRepo = $dic["repo.Positions"];
             $this->assignmentRepo = $dic["repo.UserAssignments"];
