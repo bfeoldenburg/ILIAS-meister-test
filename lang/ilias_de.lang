@@ -3463,7 +3463,7 @@ common#:#adve_assessment_settings#:#Test und Assessment-Einstellungen
 common#:#adve_frm_post_settings#:#Forenbeiträge
 common#:#adve_general_settings#:#Allgemeine Einstellungen
 common#:#adve_survey_settings#:#Umfrage-Einstellungen
-common#:#agree_date#:#Zugestimmt am
+common#:#agree_date#:#NV zugestimmt am
 common#:#all#:#Alle
 common#:#all_global_roles#:#Globale Rollen
 common#:#all_local_roles#:#Lokale Rollen (alle)
@@ -3918,6 +3918,7 @@ common#:#download_selected_items#:#Herunterladen
 common#:#downloading_settings#:#Einstellungen
 common#:#dpro_accept_usr_agreement#:#Datenschutzerklärung akzeptieren?
 common#:#dpro_accept_usr_agreement_intro#:#Es liegt eine neue Datenschutzerklärung vor. Sie müssen diese akzeptieren, bevor Sie mit der Nutzung von ILIAS fortfahren können. Lesen Sie das folgende Dokument sorgfältig durch und geben Sie unten auf der Seite Ihre Zustimmung oder Ablehnung.
+common#:#dpro_agreed_on#:#DS zugestimmt am
 common#:#dpro_force_accept_usr_agreement#:#Sie müssen die Datenschutzerklärung akzeptieren!
 common#:#dpro_no_agreement_description#:#Aktuell wird in dieser Installation keine Datenschutzerklärung angeboten. Bitte kontaktieren Sie die <a href="%1$s">ILIAS-Administration</a>.
 common#:#dpro_refuse_acceptance#:#Wiederruf der Akzeptanz der Datenschutzerklärung
@@ -8720,7 +8721,7 @@ dcl#:#dcl_plugin_hooks#:#Verfügbare Erweiterungen
 dcl#:#dcl_plugin_no_hooks_available#:#Keine aktiven Field-Type Plugins gefunden.
 dcl#:#dcl_prev_record#:#Vorheriger Eintrag
 dcl#:#dcl_prop_expression#:#Ausdruck
-dcl#:#dcl_prop_expression_info#:#Gültige Operatoren: <b>%s</b><br>Unterstützte Funktionen: <b>%s</b><br>Verwenden Sie Klammern <b>"(", ")"</b> zum Gruppieren von Ausdrücken.<br>Zeichenketten und Platzhalter verbinden mit &: <b>"Das Resultat ist " & [[Int 1]] * [[Int 2]]</b><br>Verwenden der Funktionen: <b>SUM([[Int 1]];[[Int 2]])</b><br><br>Gültige Felder (auf den Titel klicken um als Platzhalter in Ausdruck einzufügen):<br>%s<br><b>(Erlaubte Felder sind Checkbox, Zahl, Text und Datum die keine Formular-sensitiven Zeichen im Titel enthalten)<b>
+dcl#:#dcl_prop_expression_info#:#Gültige Operatoren: <b>%s</b><br>Unterstützte Funktionen: <b>%s</b><br>Verwenden Sie Klammern <b>"(", ")"</b> zum Gruppieren von Ausdrücken.<br>Zeichenketten und Platzhalter verbinden mit &: <b>"Das Resultat ist " & [[Int 1]] * [[Int 2]]</b><br>Verwenden der Funktionen: <b>SUM([[Int 1]];[[Int 2]])</b><br><br>Gültige Felder (auf den Titel klicken um als Platzhalter in Ausdruck einzufügen):<br>%s<br><b>(Erlaubte Felder sind Checkbox, Zahl, Text und Datum die keine Formular-sensitiven Zeichen im Titel enthalten)</b>
 dcl#:#dcl_public_comments#:#Kommentare
 dcl#:#dcl_public_comments_desc#:#Benutzer können Datensätze dieser Tabelle kommentieren.
 dcl#:#dcl_rating#:#Bewertung
@@ -9496,7 +9497,7 @@ exc#:#exc_reminder_feedback_start#:#Start vor Peer-Feedback-Termin
 exc#:#exc_reminder_frequency#:#Häufigkeit
 exc#:#exc_reminder_grade_body#:#Die folgende Übungseinheit wurde noch nicht bewertet
 exc#:#exc_reminder_grade_setting#:#Erinnerung an notwendige Bewertung
-exc#:#exc_reminder_grade_subject#:#Übungseinheit „%s“ wurde nicht berwertet
+exc#:#exc_reminder_grade_subject#:#Übungseinheit „%s“ wurde nicht bewertet
 exc#:#exc_reminder_link#:#URL
 exc#:#exc_reminder_mail_no_tpl#:#Keine Mail-Vorlage verwenden
 exc#:#exc_reminder_mail_template#:#Mail-Vorlage
@@ -9783,6 +9784,8 @@ file#:#preview_caption#:#Vorschau %svon %s
 file#:#preview_image_size_info#:#Die Vorschauversionen der Bilder werden je nach Bedarf verkleinert oder vergrößert, so dass ihre längste Seite der hier eingegebenen Länge (in px) entspricht.
 file#:#preview_persisting#:#Vorschaubilder speichern
 file#:#preview_persisting_info#:#Vorschaubilder werden generiert und gespeichert. Sie müssen nicht mehr bei jedem Aufruf neu erzeugt werden. Das verbessert die Performanz.
+file#:#previews_for_tiles#:#Kachelbilder
+file#:#previews_for_tiles_info#:#Verwende Vorschaubilder für Kacheln.
 file#:#publish_before_delete#:#Version(en) konnte(n) nicht gelöscht werden, da ein noch unveröffentlichter Entwurf existiert.
 file#:#replace_file_info#:#Alle früheren Dateiversionen werden gelöscht.
 file#:#resource_id#:#Ressourcen ID
@@ -12817,6 +12820,7 @@ obj#:#copy_container_page_yes_label#:#Seitengestaltung übernehmen
 obj#:#custom_icon#:#Angepasstes Icon
 obj#:#edit_availability_period#:#Zeitliche Verfügbarkeit
 obj#:#edit_questions#:#Fragen bearbeiten
+obj#:#multiple_reference_deletion_info#:#Für die folgenden Objekte existieren weitere Referenzen.
 obj#:#no_objects_selected#:#Es muss mindestens ein Objekt ausgewählt werden.
 obj#:#obj_activate_content_lang#:#Mehrsprachigkeit für die Bearbeitung aktivieren
 obj#:#obj_activate_multilang#:#Mehrsprachigkeit aktivieren
@@ -14181,6 +14185,7 @@ rbac#:#moderate_frm#:#Moderieren
 rbac#:#msg_anonymous_cannot_be_assigned#:#Der anonyme Benutzer darf keiner Rolle zugewiesen werden.
 rbac#:#msg_no_roles_of_type#:#Keine Rollen vorhanden mit der gewählten Filtereinstellung
 rbac#:#news_add_news#:#Neuigkeiten erstellen
+rbac#:#no_corresponding_roles#:#Es sind keine passenden Rollen vorhanden.
 rbac#:#nots_edit_permissions#:#Rechteeinstellungen der Administration für Notizen ändern
 rbac#:#nots_read#:#Lesezugriff auf Administration für Notizen
 rbac#:#nots_visible#:#Administration für Notizen ist sichtbar.
