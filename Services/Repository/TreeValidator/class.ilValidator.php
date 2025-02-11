@@ -1767,6 +1767,9 @@ class ilValidator
     public function dumpTree(): int
     {
         $this->writeScanLogLine("BEGIN dumpTree:");
+	$isRefRefOkay = false;
+	$isRefObjOkay = false;
+	$indent = "   ";
 
         // collect nodes with duplicate child Id's
         // (We use this, to mark these nodes later in the output as being
@@ -1905,7 +1908,7 @@ class ilValidator
                     . $indent
                     . $row->obj_id . ', '
                     . $row->type . ', '
-                    . $row->login . ', '
+                    // . $row->login . ', '
                     . $row->title
                     . (($isRowOkay) ? '' : ' <b>*ERROR*</b><font color=#ff0000>')
                     . '</td>'
@@ -1950,7 +1953,7 @@ class ilValidator
                         . $poppedIndent
                         . $popped->obj_id . ', '
                         . $popped->type . ', '
-                        . $popped->login . ', '
+                        // . $popped->login . ', '
                         . $popped->title
                         . '</font>'
                         . '</td>'
@@ -2081,7 +2084,7 @@ class ilValidator
                     . $indent
                     . $row->obj_id . ', '
                     . $row->type . ', '
-                    . $row->login . ', '
+                    // . $row->login . ', '
                     . $row->title
                     . (($isRowOkay) ? '' : ' <b>*ERROR*</b><font color=#ff0000>')
                     . '</td>'
@@ -2126,7 +2129,7 @@ class ilValidator
                     . $poppedIndent
                     . $popped->obj_id . ', '
                     . $popped->type . ', '
-                    . $popped->login . ', '
+                    //. $popped->login . ', '
                     . $popped->title
                     . '</font>'
                     . '</td>'
