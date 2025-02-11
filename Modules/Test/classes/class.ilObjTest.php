@@ -447,7 +447,7 @@ class ilObjTest extends ilObject implements ilMarkSchemaAware
                 [
                     'test_id' => ['integer', $next_id],
                     'obj_fi' => ['integer', $this->getId()],
-                    'author' => ['text', $this->getAuthor()],
+                    'author' => ['text', mb_substr($this->getAuthor(), 0, 50)],
                     'created' => ['integer', time()],
                     'tstamp' => ['integer', time()],
                     'template_id' => ['integer', $this->getTemplate()],
@@ -477,7 +477,7 @@ class ilObjTest extends ilObject implements ilMarkSchemaAware
             $this->db->update(
                 'tst_tests',
                 [
-                    'author' => ['text', $this->getAuthor()],
+                    'author' => ['text', mb_substr($this->getAuthor(), 0, 50)],
                     'broken' => ['integer', (int) $this->isTestFinalBroken()]
                 ],
                 [
@@ -1748,7 +1748,7 @@ class ilObjTest extends ilObject implements ilMarkSchemaAware
             return (int) $row['active_id'];
         }
 
-        return 0;
+        return null;
     }
 
     public static function _getActiveIdOfUser($user_id = "", $test_id = "")
@@ -4363,7 +4363,7 @@ class ilObjTest extends ilObject implements ilMarkSchemaAware
                 }
             }
         }
-        return join(",", $author);
+        return join(", ", $author);
     }
 
     /**
