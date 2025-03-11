@@ -2694,13 +2694,13 @@ class ilObjUserFolderGUI extends ilObjectGUI
         $confirmDialog->addItem('', '0', $tpl->get());
 
         foreach ($post['chb'] as $postVar => $value) {
-            $confirmDialog->addHiddenItem('chb[$postVar]', $value);
+            $confirmDialog->addHiddenItem("chb[{$postVar}]", $value);
         }
         foreach ($post['select'] as $postVar => $value) {
-            $confirmDialog->addHiddenItem('select[$postVar]', $value);
+            $confirmDialog->addHiddenItem("select[{$postVar}]", $value);
         }
         foreach ($post['current'] as $postVar => $value) {
-            $confirmDialog->addHiddenItem('current[$postVar]', $value);
+            $confirmDialog->addHiddenItem("current[{$postVar}]", $value);
         }
         $this->tpl->setContent($confirmDialog->getHTML());
     }
@@ -3240,8 +3240,9 @@ class ilObjUserFolderGUI extends ilObjectGUI
 
     protected function getTabs(): void
     {
-        if ($this->rbac_system->checkAccess(
+        if ($this->access->checkRbacOrPositionPermissionAccess(
             'visible,read',
+            \ilObjUserFolder::ORG_OP_EDIT_USER_ACCOUNTS,
             $this->object->getRefId()
         )) {
             $this->tabs_gui->addTarget(
