@@ -18,6 +18,23 @@
 
 declare(strict_types=1);
 
-class ilDclPluginFieldRepresentation extends ilDclBaseFieldRepresentation
+class ilExerciseAppEventListener
 {
+    public static function handleEvent(
+        string $a_component,
+        string $a_event,
+        array $a_parameter
+    ): void {
+        global $DIC;
+
+        switch ($a_component) {
+            case "Services/User":
+                switch ($a_event) {
+                    case "deleteUser":
+                        $DIC->exercise()->internal()->domain()->userEvent()->handleDeletion((int) $a_parameter["usr_id"]);
+                        break;
+                }
+                break;
+        }
+    }
 }
