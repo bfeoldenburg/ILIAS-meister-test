@@ -2533,6 +2533,7 @@ book#:#book_new#:#New Booking Pool
 book#:#book_no_bookings_for_you#:#No bookings have been made for you.
 book#:#book_no_objects#:#No Bookings
 book#:#book_no_of_objects#:#No. of Units
+book#:#book_no_pools_selected#:#No booking pools have been assigned to this course. Booking pools can be assigned via the course's 'Resources' tab.
 book#:#book_no_preferences_for_you#:#No preferences have been recorded for you.
 book#:#book_no_recurrence#:#Book only this date
 book#:#book_not#:#Not
@@ -4746,6 +4747,7 @@ common#:#msg_no_perm_perm#:#You have no permission to edit permission settings
 common#:#msg_no_perm_read#:#You have no permission to access this item.
 common#:#msg_no_perm_read_item#:#You have no permission to access item '%s’.
 common#:#msg_no_perm_read_lm#:#You have no permission to read this learning module.
+common#:#msg_no_perm_view_roles_of_user#:#You have no permission to view the role assignment of this user
 common#:#msg_no_perm_write#:#You have no permission to write
 common#:#msg_no_search_result#:#No entries found
 common#:#msg_no_search_string#:#Please enter your query
@@ -12828,8 +12830,8 @@ obj#:#obj_deactivate_multilang_conf#:#Do you really want to deactivate multiling
 obj#:#obj_fallback_lang#:#Default Language
 obj#:#obj_features#:#Additional Features
 obj#:#obj_import_file_error#:#This file could not be imported. Please make sure that this is a valid ILIAS export file (XML Export), of the same object type.
-obj#:#obj_insert_into_clipboard#:#Insert into Clipboard
-obj#:#obj_inserted_clipboard#:#Objects have been moved to the clipboard.
+obj#:#obj_insert_into_clipboard#:#Add to Clipboard
+obj#:#obj_inserted_clipboard#:#Selected object(s) successfully added to the clipboard.
 obj#:#obj_master_lang#:#Master Language
 obj#:#obj_more_translations#:#More Translations
 obj#:#obj_multilang_deactivated#:#Multilingualism has been deactivated.
