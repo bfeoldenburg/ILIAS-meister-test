@@ -6141,10 +6141,8 @@ content#:#cont_Headline2#:#Überschrift 2
 content#:#cont_Headline3#:#Überschrift 3
 content#:#cont_Information#:#Information
 content#:#cont_Interaction#:#Interaktion
-content#:#cont_Link#:#Link
 content#:#cont_List#:#Liste
 content#:#cont_Literature#:#Literatur
-content#:#cont_Media#:#Medien (Standard)
 content#:#cont_Mnemonic#:#Merksatz
 content#:#cont_Numbers#:#Zahlen
 content#:#cont_Poly#:#Polygon
@@ -6256,6 +6254,8 @@ content#:#cont_chapters_after_pages#:#Beachten Sie, dass innerhalb einer Ebene z
 content#:#cont_chapters_and_pages#:#Kapitel und Seiten
 content#:#cont_chapters_only#:#Nur Kapitel
 content#:#cont_char_format#:#Zeichenformat
+content#:#cont_char_link#:#Link
+content#:#cont_char_media#:#Medien (Standard)
 content#:#cont_char_style_acc#:#Akzentuiert
 content#:#cont_char_style_code#:#Code
 content#:#cont_char_style_com#:#Kommentar
@@ -8697,8 +8697,8 @@ dcl#:#dcl_no_fields_yet#:#Es wurden noch keine Felder für diese Tabelle erstell
 dcl#:#dcl_no_read_access_on_any_standard_view#:#Sie haben auf keine Standard-Tabellenansicht Lesezugriff.
 dcl#:#dcl_no_search_results_found_for#:#Es wurden keine Module gefunden mit:
 dcl#:#dcl_no_such_reference#:#Der folgende Wert ist in der Referenztabelle nicht vorhanden:
-dcl#:#dcl_no_table_found#:#Keine sichbare Tabelle verfügbar!
-dcl#:#dcl_no_tableview_found#:#Keine sichbare Tabellenansicht verfügbar!
+dcl#:#dcl_no_table_found#:#Keine sichtbare Tabelle verfügbar!
+dcl#:#dcl_no_tableview_found#:#Keine sichtbare Tabellenansicht verfügbar!
 dcl#:#dcl_not_checked#:#Nicht ausgewählt
 dcl#:#dcl_not_supported_in_import#:#Dieser Feldtyp wird beim Import nicht unterstützt.
 dcl#:#dcl_notification_activate_dcl#:#Benachrichtigung aktivieren
@@ -8800,7 +8800,7 @@ dcl#:#dcl_text_email_title#:#Titel
 dcl#:#dcl_text_email_title_info#:#Titel für die URL oder E-Mail-Adresse (optional).
 dcl#:#dcl_text_selection#:#Auswahlmenü Text
 dcl#:#dcl_text_selection_desc#:#Bereitstellen von Auswahloptionen (Text)
-dcl#:#dcl_title_standardview#:#Standard-Ansicht
+dcl#:#dcl_title_standard#:#Standard
 dcl#:#dcl_unique#:#Gleiche Einträge verhindern
 dcl#:#dcl_unique_desc#:#In dieses Feld kann ein gleichlautender Eintrag nur einmal vorgenommen werden.
 dcl#:#dcl_unique_exception#:#Der eingegebene Wert wird schon von einem anderen Eintrag verwendet.
@@ -12705,6 +12705,7 @@ news#:#news_news_item_visibility_info#:#Öffentliche Neuigkeiten können von au�
 news#:#news_news_items#:#Neuigkeit(en)
 news#:#news_no_js_click_here#:#Werden die Neuigkeiten nicht angezeigt, klicken Sie bitte hier.
 news#:#news_no_news_items#:#Es sind keine Neuigkeiten für Sie vorhanden.
+news#:#news_not_available#:#Neuigkeit nicht verfügbar
 news#:#news_notifications#:#Benachrichtigungen
 news#:#news_notifications_public#:#Öffentliche Benachrichtigungen
 news#:#news_notifications_public_info#:#Wenn diese Option gewählt wird, können Benachrichtigungen auch außerhalb von ILIAS über den persönlichen Newsfeed empfangen werden. Beachten Sie bitte, dass diese Benachrichtigungen ohne Authentifizierung zugänglich sind.
@@ -15620,7 +15621,6 @@ skmg#:#skmg_usage_type_info_prof#:#Nutzung in Kompetenzprofilen
 skmg#:#skmg_usage_type_info_res#:#Zuordnung zu Magazinobjekten
 skmg#:#skmg_usage_type_info_user#:#Zuordnung zu Benutzern
 skmg#:#skmg_your_self_evaluation#:#Ihre Selbsteinschätzung
-style#:#Style#:#Style
 style#:#adapt_icon#:#Anpassung der Icons
 style#:#adapt_icon_description#:#Passe die Iconfarbe oder das Icon an.
 style#:#adapt_icons#:#Anpassung der Iconfarben
