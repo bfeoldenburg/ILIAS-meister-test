@@ -6141,10 +6141,8 @@ content#:#cont_Headline2#:#Headline 2
 content#:#cont_Headline3#:#Headline 3
 content#:#cont_Information#:#Information
 content#:#cont_Interaction#:#Interaction
-content#:#cont_Link#:#Link
 content#:#cont_List#:#List
 content#:#cont_Literature#:#Literature
-content#:#cont_Media#:#Media (Standard)
 content#:#cont_Mnemonic#:#Mnemonic
 content#:#cont_Numbers#:#Numbers
 content#:#cont_Poly#:#Polygon
@@ -6256,6 +6254,8 @@ content#:#cont_chapters_after_pages#:#Please note that pages have to precede all
 content#:#cont_chapters_and_pages#:#Chapters and Pages
 content#:#cont_chapters_only#:#Chapters only
 content#:#cont_char_format#:#Character
+content#:#cont_char_link#:#Link
+content#:#cont_char_media#:#Media (Standard)
 content#:#cont_char_style_acc#:#Accentuated
 content#:#cont_char_style_code#:#Code
 content#:#cont_char_style_com#:#Comment
@@ -8598,7 +8598,7 @@ dcl#:#dcl_deleted_records#:#Successfully deleted %s Entries
 dcl#:#dcl_deprecated_copy#:#(Deprecated)
 dcl#:#dcl_desc#:#Descending Order (DESC)
 dcl#:#dcl_description#:#Field Description
-dcl#:#dcl_detailed_view#:#Single
+dcl#:#dcl_detailed_view#:#Detailed View
 dcl#:#dcl_display_action_menu#:#Enable possibility to copy or link the referenced module
 dcl#:#dcl_display_record_alt#:#Display this entry
 dcl#:#dcl_edit#:#Edit Data Collection
@@ -8800,7 +8800,7 @@ dcl#:#dcl_text_email_title#:#Title
 dcl#:#dcl_text_email_title_info#:#A Title for the above URL or E-Mail address (optional).
 dcl#:#dcl_text_selection#:#Text Selection
 dcl#:#dcl_text_selection_desc#:#Offer selection of text options.
-dcl#:#dcl_title_standardview#:#Standard Views
+dcl#:#dcl_title_standard#:#Standard
 dcl#:#dcl_unique#:#Unique
 dcl#:#dcl_unique_desc#:#The value in this field needs to be unique among all entires.
 dcl#:#dcl_unique_exception#:#The value you entered is already taken by another Entry.
@@ -12705,6 +12705,7 @@ news#:#news_news_item_visibility_info#:#Public news can be accessed without auth
 news#:#news_news_items#:#News Item(s)
 news#:#news_no_js_click_here#:#If news are not displayed, click here.
 news#:#news_no_news_items#:#No news available.
+news#:#news_not_available#:#Unavailable News
 news#:#news_notifications#:#Notifications
 news#:#news_notifications_public#:#Public Notifications
 news#:#news_notifications_public_info#:#If this option is enabled, notifications can be obtained by personal RSS feeds outside of ILIAS. Please note that this makes notifications accessible without authentication.
@@ -15620,7 +15621,6 @@ skmg#:#skmg_usage_type_info_prof#:#Used in Competence Profiles
 skmg#:#skmg_usage_type_info_res#:#Repository Objects Assigned as Learning Material
 skmg#:#skmg_usage_type_info_user#:#Assigned to Users
 skmg#:#skmg_your_self_evaluation#:#Your Self-Evaluation
-style#:#Style#:#Style
 style#:#adapt_icon#:#Adapt Icon
 style#:#adapt_icon_description#:#Adapt icon colors or change the icon itself.
 style#:#adapt_icons#:#Adapt Icon Colors
