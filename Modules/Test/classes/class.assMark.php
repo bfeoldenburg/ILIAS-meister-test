@@ -69,7 +69,7 @@ class ASS_Mark
     public function __unserialize(array $data): void
     {
         $this->short_name = $data['short_name'];
-        $this->official_name = $data['short_name'];
+        $this->official_name = $data['official_name'];
         $this->minimum_level = (float) $data['minimum_level'];
         $this->passed = (int) $data['passed'];
     }

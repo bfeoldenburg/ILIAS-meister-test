@@ -6127,6 +6127,17 @@ class ilObjTest extends ilObject implements ilMarkSchemaAware
         while ($row = $this->db->fetchAssoc($result)) {
             $defaults[$row["test_defaults_id"]] = $row;
         }
+
+        $spid = 999999;
+        $result = $this->db->queryF(
+            "SELECT * FROM tst_test_defaults WHERE user_fi = %s ORDER BY name ASC",
+            ['integer'],
+            [$spid]
+        );
+        while ($row = $this->db->fetchAssoc($result)) {
+            $defaults[$row["test_defaults_id"]] = $row;
+        }
+
         return $defaults;
     }
 
